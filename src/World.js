@@ -1328,8 +1328,8 @@ function addBlock() {
     if (x >= 0 && x < 32 && y >= 0 && y < 32) {
       if (g_map[i][x][y] == 0) {
         g_map[i][x][y] = 1;
-        var data = JSON.stringify(g_map);
-        console.log(data);
+        // var data = JSON.stringify(g_map);
+        // console.log(data);
         return;
       }
       console.log("block placed at", x, y);
@@ -1350,8 +1350,8 @@ function deleteBlock() {
   if (x > 0 && x < 32 && y > 0 && y < 32) {
     if (g_map[heigh][x][y] == 1) {
       g_map[heigh][x][y] = 0;
-      var data = JSON.stringify(g_map);
-      console.log(data);
+      // var data = JSON.stringify(g_map);
+      // console.log(data);
       return;
     }
     console.log("block deleted at", x, y);
