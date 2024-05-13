@@ -10,6 +10,7 @@ class Camera {
     var d_at = new Vector3().set(this.g_at);
     var d = d_at.sub(this.g_eye);
     d = d.normalize();
+    d = d.mul(0.5);
 
     this.g_eye.add(d);
     this.g_at.add(d);
@@ -19,6 +20,7 @@ class Camera {
     var d_at = new Vector3().set(this.g_at);
     var d = d_at.sub(this.g_eye);
     d = d.normalize();
+    d = d.mul(0.5);
 
     this.g_eye = this.g_eye.sub(d);
     this.g_at = this.g_at.sub(d);
@@ -29,6 +31,7 @@ class Camera {
     var d = d_at.sub(this.g_eye);
     var left = Vector3.cross(d, this.g_up);
     left.normalize();
+    left.mul(0.5);
 
     this.g_eye.sub(left);
     this.g_at.sub(left);
@@ -39,6 +42,7 @@ class Camera {
     var d = d_at.sub(this.g_eye);
     var right = Vector3.cross(d, this.g_up);
     right.normalize();
+    right.mul(0.5);
 
     this.g_eye = this.g_eye.add(right);
     this.g_at = this.g_at.add(right);
@@ -48,33 +52,29 @@ class Camera {
     var d_at = new Vector3().set(this.g_at);
     var d = d_at.sub(this.g_eye);
     var r = Math.sqrt(Math.pow(d.elements[2], 2) + Math.pow(d.elements[0], 2));
-    var theta = Math.atan2(d.elements[2], d.elements[0]); // Use atan2 for correct angle calculation
-    theta = theta + Math.PI / 36; // Rotate by 5 degrees in radians
-    var newx = r * Math.cos(theta); // Don't multiply by r
-    var newz = r * Math.sin(theta); // Don't multiply by r
+    var theta = Math.atan2(d.elements[2], d.elements[0]);
+    theta = theta + Math.PI / 36;
+    var newx = r * Math.cos(theta);
+    var newz = r * Math.sin(theta);
 
     this.g_at.elements[0] = this.g_eye.elements[0] + newx;
     this.g_at.elements[2] = this.g_eye.elements[2] + newz;
-
-    console.log(newx, newz);
   }
 
   rotateLeft() {
     var d_at = new Vector3().set(this.g_at);
     var d = d_at.sub(this.g_eye);
     var r = Math.sqrt(Math.pow(d.elements[2], 2) + Math.pow(d.elements[0], 2));
-    var theta = Math.atan2(d.elements[2], d.elements[0]); // Use atan2 for correct angle calculation
-    theta = theta - Math.PI / 36; // Rotate by 5 degrees in radians
-    var newx = r * Math.cos(theta); // Don't multiply by r
-    var newz = r * Math.sin(theta); // Don't multiply by r
+    var theta = Math.atan2(d.elements[2], d.elements[0]);
+    theta = theta - Math.PI / 36;
+    var newx = r * Math.cos(theta);
+    var newz = r * Math.sin(theta);
 
     this.g_at.elements[0] = this.g_eye.elements[0] + newx;
     this.g_at.elements[2] = this.g_eye.elements[2] + newz;
-
-    console.log(newx, newz);
   }
 
-  rotateCamera(mouse_dist) {
+  rotateCamera(mouse_dist, dy) {
     var d_at = new Vector3().set(this.g_at);
     var d = d_at.sub(this.g_eye);
     var r = Math.sqrt(Math.pow(d.elements[2], 2) + Math.pow(d.elements[0], 2));
@@ -83,7 +83,20 @@ class Camera {
     var newx = r * Math.cos(theta);
     var newz = r * Math.sin(theta);
 
+    var newy = this.g_eye.elements[1] - dy * 0.5;
+
     this.g_at.elements[0] = this.g_eye.elements[0] + newx;
     this.g_at.elements[2] = this.g_eye.elements[2] + newz;
+    this.g_at.elements[1] = newy;
+  }
+
+  moveUp() {
+    this.g_eye.elements[1] = this.g_eye.elements[1] + 0.25;
+    this.g_at.elements[1] = this.g_at.elements[1] + 0.25;
+  }
+
+  moveDown() {
+    this.g_eye.elements[1] = this.g_eye.elements[1] - 0.25;
+    this.g_at.elements[1] = this.g_at.elements[1] - 0.25;
   }
 }
